@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head%}
+
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Stress Detector</h1>
+
+    <form action="/predict" method="POST">
+        <div>
+            <p>HR</p>
+            <input type="text" name = "HR" id="HR">
+            <p>interval in seconds</p>
+            <input type="text" name = "IIS" id="IIS">
+            <p>AVNN</p>
+            <input type="text" name = "AVNN" id="AVNN">
+            <p>RMSSD</p>
+            <input type="text" name = "RMSSD" id="RMSSD">
+            <p>pNN50</p>
+            <input type="text" name = "pNN50" id="pNN50">
+            <p>TP</p>
+            <input type="text" name = "TP" id="TP">
+            <p>ULF</p>
+            <input type="text" name = "ULF" id="ULF">
+            <p>VLF</p>
+            <input type="text" name = "VLF" id="VLF">
+            <p>LF</p>
+            <input type="text" name = "LF" id="LF">
+            <p>HF</p>
+            <input type="text" name = "HF" id="HF">
+            <p>LF_HF</p>
+            <input type="text" name = "LF_HF" id="LF_HFs">
+
+        <input type="submit" value="Predict">
+    </form>
+    <h2>Predicted: {{pred}}</h2>
+</div>
+{% endblock %}
