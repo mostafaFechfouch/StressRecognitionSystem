@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+
+</head>
+
+<body>
+  <!--    <p>{{xax}}</p> -->
+  <canvas id="myChart" width="1000" height="400"></canvas>
+
+  <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var chart = new Chart(ctx, {
+
+      type: 'line',
+
+      data: {
+
+        datasets: [{
+
+          data: [],
+          label: 'RESP',
+
+          borderColor: 'rgb(255, 99, 132)',
+
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+
+          lineTension: 0,
+          fill: false,
+          cubicInterpolationMode: 'monotone'
+//          borderDash: [8, 4]
+
+        }]
+
+      },
+
+      options: {
+        title: {
+          display: true,
+          text: 'Data reading'
+        },
+        responsive: false,
+        scales: {
+
+          xAxes: [{
+            type: 'realtime',
+            realtime: {
+//              duration: 20000,
+//              refresh: 1000,
+//              delay: 50,
+              //              delay: 1000,
+              onRefresh: function (chart) {
+                chart.data.datasets.forEach(function (dataset) {
+                  /*               
+                                  dataset.data.push({
+                                      x: {{xax}},
+                                      y: {{yax}}
+                                  });
+                  */
+
+                  var xmlhttp = new XMLHttpRequest();
+                  xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                      //                      console.log(JSON.parse(this.responseText))
+                      dataset.data.push({
+
+                        x: Date.now(),
+                        y: parseFloat(this.responseText)
+
+                      });
+                    }
+                  };
+                  xmlhttp.open("GET", "/data", true);
+                  xmlhttp.send();
+
+                });
+
+              }
+
+            }
+
+          }],
+          yAxes: [{
+            type: 'linear',
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'value'
+            }
+          }]
+        },
+        tooltips: {
+          mode: 'nearest',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: false
+        },
+        pan: {
+          enabled: true,
+          mode: 'x',
+          rangeMax: {
+            x: 4000
+          },
+          rangeMin: {
+            x: 0
+          }
+        },
+        zoom: {
+          enabled: true,
+          mode: 'x',
+          rangeMax: {
+            x: 20000
+          },
+          rangeMin: {
+            x: 1000
+          }
+        }
+
+      }
+
+    });
+  </script>
+</body>
+
+</html>

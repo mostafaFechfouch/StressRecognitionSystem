@@ -1,13 +1,28 @@
-#This is a simple script to post a dataframe row in json format to test the prediction API (i installed postman now to use it instead)
+# This is a simple script to post a dataframe row in json format to test the prediction API (i installed postman now to use it instead)
+import datetime
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+import csv
+import time
+import serial
+import subprocess
+import sys
 import requests
 import json
 
-url='http://127.0.0.1:8000/predictfromjson'
+url = 'http://127.0.0.1:8000/predictfromjson'
 
-dataNotStressed={"HR":{"282":72.48120513},"IIS":{"282":0.814128205},"AVNN":{"282":0.813474},"RMSSD":{"282":0.0318934},"pNN50":{"282":0.027027},"TP":{"282":0.0563325},"ULF":{"282":0.0442237},"VLF":{"282":0.0121088},"LF":{"282":0.0},"HF":{"282":0.0},"LF_HF":{"282":3.5556950345}}
+datastressedETC = {"ECG": {"109545": 0.071}, "EMG": {"109545": 0.821}, "HR": {"109545": 91.0}, "RESP": {"109545": 44.44}, "RRinterval": {"109545": 0.96774194}, "NNRR": {
+    "109545": 0.971429}, "RMSSD": {"109545": 0.031294918}, "SDNN": {"109545": 0.0478281587}, "AVNN": {"109545": 0.9843317977}, "pNN50": {"109545": 0.2285714286}}
 
-dataStressed= {"HR":{"1716":77.90243902},"interval in seconds":{"1716":0.809875},"AVNN":{"1716":0.809128},"RMSSD":{"1716":0.0147978},"pNN50":{"1716":0.0526316},"TP":{"1716":0.022409},"ULF":{"1716":0.022409},"VLF":{"1716":0.0},"LF":{"1716":0.0},"HF":{"1716":0.0},"LF_HF":{"1716":3.5556950345}}
+dataNotStressedETC = {"ECG": {"125871": 0.047}, "EMG": {"125871": 0.942625}, "HR": {"125871": 86.0}, "RESP": {"125871": 33.85}, "RRinterval": {"125871": 0.70967742}, "NNRR": {
+    "125871": 0.97619}, "RMSSD": {"125871": 0.0318622455}, "SDNN": {"125871": 0.0336337012}, "AVNN": {"125871": 0.70046083}, "pNN50": {"125871": 0.1666666667}}
 
-r=requests.post(url , json= dataStressed)
+r = requests.post(url, json=dataNotStressedETC)
 
 print(r.text)
+matplotlib.use("tkAgg")
+
+
